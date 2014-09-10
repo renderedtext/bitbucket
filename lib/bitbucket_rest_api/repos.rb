@@ -86,6 +86,28 @@ module BitBucket
 
     alias :list_branches :branches
 
+    # List groups
+    #
+    # = Examples
+    #
+    #   bitbucket = BitBucket.new
+    #   bibucket.repos.groups 'user-name', 'repo-name'
+    #
+    #   repos = BitBucket::Repos.new
+    #   repos.groups 'user-name', 'repo-name'
+    #
+    def groups(user_name, repo_name, params={})
+      _update_user_repo_params(user_name, repo_name)
+      _validate_user_repo_params(user, repo) unless (user? && repo?)
+      normalize! params
+
+      response = get_request("/group-privileges/#{user}/#{repo.downcase}", params)
+      return response unless block_given?
+      response.each { |el| yield el }
+    end
+
+    alias :list_groups :groups
+
     # Create a new repository for the authenticated user.
     #
     # = Parameters
