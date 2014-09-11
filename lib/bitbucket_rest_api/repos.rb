@@ -108,6 +108,22 @@ module BitBucket
 
     alias :list_groups :groups
 
+    # Gets branch head
+    #
+    # = Examples
+    #
+    #   bitbucket = BitBucket.new
+    #   bibucket.repos.branch_head 'user-name', 'repo-name', 'branch-name'
+    #
+    def branch_head(user_name, repo_name, branch_name, params={})
+      _update_user_repo_params(user_name, repo_name)
+      _validate_user_repo_params(user, repo) unless user? && repo?
+      _validate_presence_of(branch_name)
+      normalize! params
+
+      get_request("/repositories/#{user}/#{repo.downcase}/commit/#{branch_name}", params)
+    end
+
     # Create a new repository for the authenticated user.
     #
     # = Parameters

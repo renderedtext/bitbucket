@@ -21,6 +21,7 @@ module BitBucket
       return response unless block_given?
       response.each { |el| yield el }
     end
+
     alias :all :list
 
     # Gets a single service

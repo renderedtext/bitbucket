@@ -36,7 +36,14 @@ module BitBucket
       puts "EXECUTED: #{method} - #{path} with #{params} and #{options}" if ENV['DEBUG']
 
       conn = connection(options)
-      path = (conn.path_prefix + path).gsub(/\/\//,'/') if conn.path_prefix != '/'
+
+      if params["version"] == "2.0"
+        path_prefix = conn.path_prefix.gsub("1.0", "2.0")
+      else
+        path_prefix = conn.path_prefix
+      end
+
+      path = (path_prefix + path).gsub(/\/\//,'/') if conn.path_prefix != '/'
 
       response = conn.send(method) do |request|
         case method.to_sym
