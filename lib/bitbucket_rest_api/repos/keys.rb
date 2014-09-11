@@ -45,6 +45,21 @@ module BitBucket
       post_request("/repositories/#{user}/#{repo.downcase}/deploy-keys/", params)
     end
 
+    # Get key
+    #
+    # = Examples
+    #  @bitbucket = BitBucket.new
+    #  @bitbucket.repos.keys.get 'user-name', 'repo-name', 'key-id'
+    #
+    def get(user_name, repo_name, key_id, params={})
+      _update_user_repo_params(user_name, repo_name)
+      _validate_user_repo_params(user, repo) unless user? && repo?
+      _validate_presence_of key_id
+      normalize! params
+
+      get_request("/repositories/#{user}/#{repo.downcase}/deploy-keys/#{key_id}", params)
+    end
+
     # Edit a key
     #
     # = Inputs
