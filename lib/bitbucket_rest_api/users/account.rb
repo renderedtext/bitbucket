@@ -49,5 +49,14 @@ module BitBucket
     def delete_key(accountname, key_id)
       response = delete_request("/users/#{accountname}/ssh-keys/#{key_id}")
     end
+
+    # GET the list of groups associated with user
+    def groups(accountname, params={})
+      normalize! params
+
+      response = get_request("/groups/#{accountname}", params)
+      return response unless block_given?
+      response.each { |el| yield el }
+    end
   end # Users::Account
 end # BitBucket
