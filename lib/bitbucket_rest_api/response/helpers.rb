@@ -7,7 +7,6 @@ module BitBucket
 
     def on_complete(env)
       env[:body].class.class_eval <<-RUBY_EVAL, __FILE__, __LINE__ + 1
-        include BitBucket::Result
 
         def env
           @env
